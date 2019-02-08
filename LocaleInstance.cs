@@ -3,101 +3,113 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
-public static class LanguageDatabase
+namespace Miki.Localization
 {
-	private static Dictionary<string, ResourceManager> Locales = new Dictionary<string, ResourceManager>();
-	private static string _defaultLocale;
+    public static class LanguageDatabase
+    {
+        private static readonly Dictionary<string, IResourceManager> Locales = new Dictionary<string, IResourceManager>();
+        private static string _defaultLocale;
 
-	public static void AddLanguage(string info, ResourceManager resource, bool isDefault = false)
-	{
-		Locales.Add(info, resource);
+        public static void AddLanguage(string info, IResourceManager resource, bool isDefault = false)
+        {
+            Locales.Add(info, resource);
 
-		if(isDefault)
-		{
-			_defaultLocale = info;
-		}
-	}
+            if (isDefault)
+            {
+                _defaultLocale = info;
+            }
+        }
 
-	public static ResourceManager GetDefaultLanguage()
-	{
-		if(_defaultLocale == null)
-		{
-			return null;
-		}
-		return Locales[_defaultLocale];
-	}
+        public static IResourceManager GetDefaultLanguage()
+        {
+            if (_defaultLocale == null)
+            {
+                return null;
+            }
+            return Locales[_defaultLocale];
+        }
 
-	public static ResourceManager GetLanguageOrDefault(CultureInfo info)
-	{
-		return GetLanguageOrDefault(info.ThreeLetterISOLanguageName);
-	}
-	public static ResourceManager GetLanguageOrDefault(string iso)
-	{
-		if (Locales.TryGetValue(iso, out var resource))
-		{
-			return resource;
-		}
+        public static IResourceManager GetLanguageOrDefault(CultureInfo info)
+        {
+            return GetLanguageOrDefault(info.ThreeLetterISOLanguageName);
+        }
+        public static IResourceManager GetLanguageOrDefault(string iso)
+        {
+            if (Locales.TryGetValue(iso, out var resource))
+            {
+                return resource;
+            }
 
-		if(_defaultLocale != null)
-		{
-			return Locales[_defaultLocale];
-		}
+            if (_defaultLocale != null)
+            {
+                return Locales[_defaultLocale];
+            }
 
-		return null;
-	}
-}
+            return null;
+        }
 
-public class LocaleInstance
-{
-	// TODO: replace with IResource.
-	private const string defaultResult = "error_resource_missing";
+        public static void SetDefault(string iso)
+        {
+            _defaultLocale = iso;
+        }
+    }
 
-	private readonly ResourceManager _resources;
+    public class LocaleInstance
+    {
+        // TODO: replace with IResource.
+        private const string defaultResult = "error_resource_missing";
 
-	public LocaleInstance(string isoLanguage)
-	{
-		_resources = LanguageDatabase.GetLanguageOrDefault(isoLanguage);
+        private readonly IResourceManager _resources;
 
-		if(_resources == null)
-		{
-			throw new Exception("This language is not loaded correctly.");
-		}
-	}
-	public LocaleInstance(CultureInfo info)
-		: this(info.ThreeLetterISOLanguageName)
-	{ }
+        public LocaleInstance(string isoLanguage)
+        {
+            _resources = LanguageDatabase.GetLanguageOrDefault(isoLanguage);
 
-	public string GetString(string m, params object[] p)
-	{
-		string output = null;
+            if (_resources == null)
+            {
+                throw new Exception("This language is not loaded correctly.");
+            }
+        }
+        public LocaleInstance(CultureInfo info)
+            : this(info.ThreeLetterISOLanguageName)
+        { }
 
-		if (InternalStringAvailable(m, _resources))
-		{
-			output = InternalGetString(m, _resources, p);
-		}
+        public string GetString(string m, params object[] p)
+        {
+            string output = null;
 
-		return output ?? defaultResult;
-	}
+            if (InternalStringAvailable(m, _resources))
+            {
+                output = InternalGetString(m, _resources, p);
+            }
+            else if (InternalStringAvailable(m, LanguageDatabase.GetDefaultLanguage()))
+            {
+                output = InternalGetString(m, LanguageDatabase.GetDefaultLanguage(), p);
+            }
 
-	public bool HasString(string resourceId)
-		=> !string.IsNullOrWhiteSpace(_resources.GetString(resourceId));
+            return output ?? defaultResult;
+        }
 
-	private static bool InternalStringAvailable(string m, ResourceManager lang)
-		=> lang.GetString(m) != null;
+        public bool HasString(string resourceId)
+            => !string.IsNullOrWhiteSpace(_resources.GetString(resourceId));
 
-	private static string InternalGetString(string m, ResourceManager lang, params object[] p)
-	{
-		string resource = lang.GetString(m);
+        private static bool InternalStringAvailable(string m, IResourceManager lang)
+            => !string.IsNullOrWhiteSpace(lang.GetString(m));
 
-		if(string.IsNullOrEmpty(resource))
-		{
-			return defaultResult;
-		}
+        private static string InternalGetString(string m, IResourceManager lang, params object[] p)
+        {
+            string resource = lang.GetString(m);
 
-		if (p.Length > 0)
-		{
-			return string.Format(resource, p);
-		}
-		return resource;
-	}
+            if (string.IsNullOrEmpty(resource))
+            {
+                return defaultResult;
+            }
+
+            if (p.Length > 0)
+            {
+                return string.Format(resource, p);
+            }
+            return resource;
+        }
+    }
 }
