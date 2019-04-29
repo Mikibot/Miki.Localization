@@ -13,6 +13,10 @@ namespace Miki.Localization
         {
             rm = new ResourceManager(type);
         }
+        public ResxResourceManager(ResourceManager resourceManager)
+        {
+            rm = resourceManager;
+        }
 
         public string GetString(string key)
             => rm.GetString(key);

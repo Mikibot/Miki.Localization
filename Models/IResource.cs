@@ -4,7 +4,7 @@ namespace Miki.Localization
 {
 	public interface IResource
 	{
-		string Get(LocaleInstance instance);
+		string Get(IResourceManager instance);
 	}
 
 	public class StringResource : IResource
@@ -16,7 +16,7 @@ namespace Miki.Localization
 			Value = value;
 		}
 
-		public string Get(LocaleInstance instance)
+		public string Get(IResourceManager instance)
 			=> Value;
 	}
 
@@ -31,7 +31,7 @@ namespace Miki.Localization
 			Parameters = param;
 		}
 
-		public string Get(LocaleInstance instance)
-			=> instance.GetString(Resource, Parameters);
+		public string Get(IResourceManager instance)
+			=> string.Format(instance.GetString(Resource), Parameters);
 	}
 }
