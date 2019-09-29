@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Miki.Localization
+namespace Miki.Localization.Models
 {
     public interface IResourceManager
     {

@@ -1,16 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Velddev</Authors>
+    <Authors>Mike Veldsink</Authors>
     <Description>Localization utility and types for libraries</Description>
-    <Version>1.3.1</Version>
+    <Version>2.0.1</Version>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/mikibot/miki.localization</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/mikibot/miki.localization</RepositoryUrl>
+    <PackageTags>localization</PackageTags>
+    <NeutralLanguage>en-150</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove=".gitignore" />
     <None Remove="README.md" />
+    <None Include="LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
