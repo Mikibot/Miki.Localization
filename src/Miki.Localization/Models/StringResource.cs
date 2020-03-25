@@ -1,5 +1,8 @@
-﻿namespace Miki.Localization.Models
+﻿namespace Miki.Localization
 {
+    /// <summary>
+    /// Raw string resources.
+    /// </summary>
     public class StringResource : IResource
     {
         public string Value { get; internal set; }
@@ -9,7 +12,7 @@
             Value = value;
         }
 
-        public string Get(IResourceManager instance)
-            => Value;
+        /// <inheritdoc/>
+        public string Get(IResourceManager instance) => Value;
     }
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Miki.Localization</name>
+    </assembly>
+    <members>
+        <member name="M:Miki.Localization.ILocalizationService.ListLocalesAsync">
+            <summary>
+            Lists all possible locales.
+            </summary>
+            <returns>
+            A list of all enabled translations of Miki.
+            </returns>
+        </member>
+        <member name="T:Miki.Localization.LocaleExtensions">
+            <summary>
+            Helper functions for the <see cref="T:Miki.Localization.Locale"/> class.
+            </summary>
+        </member>
+        <member name="M:Miki.Localization.LocaleExtensions.GetString(Miki.Localization.Locale,System.String,System.Object[])">
+            <summary>
+            Helper extension function to automatically format a string using string.Format
+            </summary>
+        </member>
+        <member name="M:Miki.Localization.LocaleExtensions.Get(Miki.Localization.IResource,Miki.Localization.Locale)">
+            <summary>
+            Get helper function that fetches the resource manager from a locale.
+            </summary>
+        </member>
+        <member name="M:Miki.Localization.ResourceManager.GetString(Miki.Functional.Required{System.String})">
+            <inheritdoc />
+        </member>
+        <member name="M:Miki.Localization.TestResourceManager.GetString(Miki.Functional.Required{System.String})">
+            <inheritdoc />
+        </member>
+        <member name="T:Miki.Localization.LanguageResource">
+            <summary>
+            A 
+            </summary>
+        </member>
+        <member name="M:Miki.Localization.LanguageResource.Get(Miki.Localization.IResourceManager)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Miki.Localization.Locale">
+            <summary>
+            Localized 
+            </summary>
+        </member>
+        <member name="P:Miki.Localization.Locale.CountryCode">
+            <summary>
+            An ISO-3 country code of the current locale.
+            </summary>
+        </member>
+        <member name="P:Miki.Localization.Locale.ResourceManager">
+            <summary>
+            The resources attached to this Locale.
+            </summary>
+        </member>
+        <member name="M:Miki.Localization.Locale.GetString(Miki.Localization.IResource)">
+            <summary>
+            Gets a string with the said resource from the resource manager.
+            </summary>
+        </member>
+        <member name="T:Miki.Localization.StringResource">
+            <summary>
+            Raw string resources.
+            </summary>
+        </member>
+        <member name="M:Miki.Localization.StringResource.Get(Miki.Localization.IResourceManager)">
+            <inheritdoc/>
+        </member>
+    </members>
+</doc>

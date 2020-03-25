@@ -1,9 +1,10 @@
-﻿namespace Miki.Localization.Models
+﻿namespace Miki.Localization
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
+    /// <summary>
+    /// Localized 
+    /// </summary>
     public class Locale
     {
         /// <summary>
@@ -11,6 +12,9 @@
         /// </summary>
         public string CountryCode { get; }
 
+        /// <summary>
+        /// The resources attached to this Locale.
+        /// </summary>
         public IResourceManager ResourceManager { get; }
 
         public Locale(string countryCode, IResourceManager manager)
@@ -18,14 +22,19 @@
             this.CountryCode = countryCode;
             this.ResourceManager = manager;
         }
-
-        public string GetString(string key)
-            => ResourceManager.GetString(key);
+        
+        /// <summary>
+        /// Gets a string with the said resource from the resource manager.
+        /// </summary>
+        public string GetString(IResource resource) => resource.Get(ResourceManager);
 
         public override bool Equals(object obj)
         {
-            return obj is Locale locale 
-                && this.CountryCode == locale.CountryCode;
+            if(obj == null)
+            {
+                return false;
+            }
+            return obj is Locale locale && this.CountryCode == locale.CountryCode;
         }
 
         public override int GetHashCode()

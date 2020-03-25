@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Miki.Localization.Models;
-
-namespace Miki.Localization.Exceptions
+﻿namespace Miki.Localization.Exceptions
 {
+    using System;
+
     public abstract class LocalizedException : Exception
     {
 		public abstract IResource LocaleResource { get; }
 
         public LocalizedException()
-            : base()
         {
         }
         public LocalizedException(string message)

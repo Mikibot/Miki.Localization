@@ -1,4 +1,4 @@
-﻿namespace Miki.Localization.Models
+﻿namespace Miki.Localization
 {
 	public interface IResource
 	{
