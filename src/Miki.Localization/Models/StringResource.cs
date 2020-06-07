@@ -1,4 +1,6 @@
-﻿namespace Miki.Localization
+﻿using Miki.Functional;
+
+namespace Miki.Localization
 {
     /// <summary>
     /// Raw string resources.
@@ -13,6 +15,6 @@
         }
 
         /// <inheritdoc/>
-        public string Get(IResourceManager instance) => Value;
+        public Optional<string> Get(IResourceManager instance) => Value;
     }
 }

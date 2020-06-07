@@ -13,7 +13,7 @@ namespace Miki.Localization.Collections
 
         Optional<string> GetString(string countryCode, string name);
 
-        Optional<Locale> GetLocale(string countryCode);
+        Locale GetLocale(string countryCode);
         
         bool TryGetLocale(string countryCode, out Locale locale);
     }

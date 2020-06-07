@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Miki.Functional;
 
 namespace Miki.Localization
 {
@@ -19,14 +20,21 @@ namespace Miki.Localization
         }
 
         /// <inheritdoc/>
-        public string Get(IResourceManager instance)
+        public Optional<string> Get(IResourceManager instance)
         {
-            return string.Format(instance.GetString(resource), InterpolateResources(instance, parameters));
+            var result = instance.GetString(resource);
+
+            if (!result.HasValue)
+            {
+                return Optional<string>.None;
+            }
+            
+            return string.Format(result, InterpolateResources(instance, parameters).ToArray());
         }
 
         private static IEnumerable<object> InterpolateResources(IResourceManager resourceManager, IEnumerable<object> parameters)
         {
-            return parameters.Select(p => p is IResource resource ? resource.Get(resourceManager) : p);
+            return parameters.Select(p => p is IResource resource ? resource.Get(resourceManager).UnwrapDefault() : p);
         }
     }
 }

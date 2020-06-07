@@ -1,3 +1,4 @@
 ﻿{
-  "language": "Dutch"
+  "language": "Dutch",
+  "greet": "Hallo {0}!"
 }

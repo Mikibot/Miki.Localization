@@ -1,7 +1,9 @@
-﻿namespace Miki.Localization
+﻿using Miki.Functional;
+
+namespace Miki.Localization
 {
 	public interface IResource
 	{
-		string Get(IResourceManager instance);
+		Optional<string> Get(IResourceManager instance);
 	}
 }
