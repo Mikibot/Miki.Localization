@@ -18,9 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Resources\eng.json" />
-    <EmbeddedResource Include="Resources\dut.json" />
-    <EmbeddedResource Include="Resources\eng.json" />
+    <EmbeddedResource Include="Resources\dut.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\eng.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

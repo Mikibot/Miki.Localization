@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Miki.Functional;
 
 namespace Miki.Localization.Collections
@@ -79,7 +80,10 @@ namespace Miki.Localization.Collections
             return GetEnumerator();
         }
 
-        public static LocaleCollection FromAssembly(Assembly assembly, string @namespace)
+        public static LocaleCollection FromAssembly(
+            Assembly assembly,
+            string @namespace,
+            Func<IResourceManager, IResourceManager> configure = null)
         {
             const string suffix = ".json";
             var collection = new LocaleCollection();
@@ -98,11 +102,64 @@ namespace Miki.Localization.Collections
                 using var stream = assembly.GetManifestResourceStream(path)
                                    ?? throw new InvalidOperationException($"Could not find resource {path}");
                 
-                var resourceManager = ResourceManager.FromJson(stream);
+                IResourceManager resourceManager = ResourceManager.FromJson(stream);
+
+                if (configure != null)
+                {
+                    resourceManager = configure(resourceManager);
+                }
 
                 collection.Add(localeName, resourceManager);
             }
 
+            return collection;
+        }
+
+        public static LocaleCollection FromDirectory(
+            string path,
+            Func<IResourceManager, IResourceManager> configure = null)
+        {
+            var collection = new LocaleCollection();
+            var files = Directory.GetFiles(path, "*.json");
+            
+            foreach(var fileName in files)
+            {
+                using var stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                var languageName = Path.GetFileNameWithoutExtension(fileName);
+                IResourceManager resourceManager = ResourceManager.FromJson(stream);
+
+                if (configure != null)
+                {
+                    resourceManager = configure(resourceManager);
+                }
+
+                collection.Add(languageName, resourceManager);
+            }
+            
+            return collection;
+        }
+
+        public static async ValueTask<LocaleCollection> FromDirectoryAsync(
+            string path,
+            Func<IResourceManager, IResourceManager> configure = null)
+        {
+            var collection = new LocaleCollection();
+            var files = Directory.GetFiles(path, "*.json");
+            
+            foreach(var fileName in files)
+            {
+                await using var stream = File.Open(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
+                var languageName = Path.GetFileNameWithoutExtension(fileName);
+                IResourceManager resourceManager = await ResourceManager.FromJsonAsync(stream);
+
+                if (configure != null)
+                {
+                    resourceManager = configure(resourceManager);
+                }
+                
+                collection.Add(languageName, resourceManager);
+            }
+            
             return collection;
         }
     }
