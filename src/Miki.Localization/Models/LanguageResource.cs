@@ -11,24 +11,17 @@ namespace Miki.Localization
     {
         private readonly string resource;
         private readonly object[] parameters;
-        private readonly bool hasResourceParameter;
 
         public LanguageResource(string resource, params object[] parameters)
         {
             this.resource = resource;
             this.parameters = parameters;
-            hasResourceParameter = parameters.OfType<IResource>().Any();
         }
 
         /// <inheritdoc/>
         public string Get(IResourceManager instance)
         {
-            if (hasResourceParameter)
-            {
-                return string.Format(instance.GetString(resource), InterpolateResources(instance, parameters));
-            }
-            
-            return string.Format(instance.GetString(resource), parameters);
+            return string.Format(instance.GetString(resource), InterpolateResources(instance, parameters));
         }
 
         private static IEnumerable<object> InterpolateResources(IResourceManager resourceManager, IEnumerable<object> parameters)
