@@ -17,4 +17,10 @@
     <ProjectReference Include="..\..\src\Miki.Localization\Miki.Localization.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\eng.json" />
+    <EmbeddedResource Include="Resources\dut.json" />
+    <EmbeddedResource Include="Resources\eng.json" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text.Json;
 using Miki.Functional;
 
 namespace Miki.Localization.Collections
@@ -74,6 +77,33 @@ namespace Miki.Localization.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public static LocaleCollection FromAssembly(Assembly assembly, string @namespace)
+        {
+            const string suffix = ".json";
+            var collection = new LocaleCollection();
+
+            foreach (var path in assembly.GetManifestResourceNames()
+                .Where(f => f.StartsWith(@namespace) && f.EndsWith(suffix)))
+            {
+                var localeName = path[..^suffix.Length];
+                var end = localeName.LastIndexOf('.');
+
+                if (end != -1)
+                {
+                    localeName = localeName.Substring(end + 1);
+                }
+
+                using var stream = assembly.GetManifestResourceStream(path)
+                                   ?? throw new InvalidOperationException($"Could not find resource {path}");
+                
+                var resourceManager = ResourceManager.FromJson(stream);
+
+                collection.Add(localeName, resourceManager);
+            }
+
+            return collection;
         }
     }
 }
