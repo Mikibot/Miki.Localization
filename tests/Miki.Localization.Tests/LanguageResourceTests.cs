@@ -26,7 +26,7 @@ namespace Miki.Localization.Tests
         public void LanguageResourceWithIResourceParamsTest()
         {
             var resource = new LanguageResource("test {0}", new StringResource("value"));
-
+            
             Assert.Equal("test value", resource.Get(manager));
         }
     }

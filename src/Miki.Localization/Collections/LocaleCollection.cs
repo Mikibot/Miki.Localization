@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Miki.Functional;
+using Miki.Localization.Exceptions;
 
 namespace Miki.Localization.Collections
 {
@@ -49,11 +50,11 @@ namespace Miki.Localization.Collections
                 : Optional<string>.None; 
         }
 
-        public Optional<Locale> GetLocale(string countryCode)
+        public Locale GetLocale(string countryCode)
         {
             return resourceManagers.TryGetValue(countryCode, out var resourceManager)
                 ? new Locale(countryCode, resourceManager)
-                : default;
+                : throw new KeyNotFoundException($"Locale {countryCode} is not added in the locale collection");
         }
 
         public bool TryGetLocale(string countryCode, out Locale locale)

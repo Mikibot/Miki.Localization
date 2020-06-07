@@ -38,7 +38,7 @@ namespace Miki.Localization
             
             return resourceManagers
                 .Select(resourceManager => resourceManager.GetString(key))
-                .First(result => result.HasValue);
+                .FirstOrDefault(result => result.HasValue);
         }
     }
 }

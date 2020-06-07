@@ -5,18 +5,19 @@
 
     public class ResxResourceManager : IResourceManager
     {
-        private readonly System.Resources.ResourceManager rm;
+        private readonly System.Resources.ResourceManager resourceManager;
 
         public ResxResourceManager(Type type)
+            : this(new System.Resources.ResourceManager(type))
         {
-            rm = new System.Resources.ResourceManager(type);
         }
+        
         public ResxResourceManager(System.Resources.ResourceManager resourceManager)
         {
-            rm = resourceManager;
+            this.resourceManager = resourceManager;
         }
 
         public Optional<string> GetString(Required<string> key)
-            => rm.GetString(key);
+            => resourceManager.GetString(key);
     }
 }

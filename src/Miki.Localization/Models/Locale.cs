@@ -1,4 +1,6 @@
-﻿namespace Miki.Localization
+﻿using Miki.Functional;
+
+namespace Miki.Localization
 {
     using System;
 
@@ -26,7 +28,7 @@
         /// <summary>
         /// Gets a string with the said resource from the resource manager.
         /// </summary>
-        public string GetString(IResource resource) => resource.Get(ResourceManager);
+        public Optional<string> GetString(IResource resource) => resource.Get(ResourceManager);
 
         public override bool Equals(object obj)
         {
@@ -36,11 +38,6 @@
         public override int GetHashCode()
         {
             return HashCode.Combine(CountryCode, ResourceManager);
-        }
-
-        public static explicit operator Locale(string s)
-        {
-            return new Locale(s, null);
         }
 
         public bool Equals(Locale other)
