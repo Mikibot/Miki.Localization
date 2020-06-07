@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="Miki.Functional" Version="0.1.3" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
 </Project>
