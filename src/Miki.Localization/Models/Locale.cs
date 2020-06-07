@@ -5,7 +5,7 @@
     /// <summary>
     /// Localized 
     /// </summary>
-    public class Locale
+    public readonly struct Locale : IEquatable<Locale>
     {
         /// <summary>
         /// An ISO-3 country code of the current locale.
@@ -19,8 +19,8 @@
 
         public Locale(string countryCode, IResourceManager manager)
         {
-            this.CountryCode = countryCode;
-            this.ResourceManager = manager;
+            CountryCode = countryCode;
+            ResourceManager = manager;
         }
         
         /// <summary>
@@ -30,21 +30,32 @@
 
         public override bool Equals(object obj)
         {
-            if(obj == null)
-            {
-                return false;
-            }
-            return obj is Locale locale && this.CountryCode == locale.CountryCode;
+            return obj is Locale other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(this.CountryCode);
+            return HashCode.Combine(CountryCode, ResourceManager);
         }
 
         public static explicit operator Locale(string s)
         {
             return new Locale(s, null);
+        }
+
+        public bool Equals(Locale other)
+        {
+            return CountryCode == other.CountryCode && Equals(ResourceManager, other.ResourceManager);
+        }
+
+        public static bool operator ==(Locale left, Locale right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Locale left, Locale right)
+        {
+            return !left.Equals(right);
         }
     }
 }
